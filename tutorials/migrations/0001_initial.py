@@ -15,9 +15,10 @@ class Migration(migrations.Migration):
             name='Tutorial',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(default='', max_length=70)),
-                ('description', models.CharField(default='', max_length=200)),
-                ('published', models.BooleanField(default=False)),
+                ('nombre', models.CharField(default='', max_length=70)),
+                ('cel', models.CharField(default='', max_length=10)),
+                ('contra', models.CharField(default='', max_length=4)),
+                ('conf', models.CharField(default='', max_length=4)),
             ],
         ),
     ]
