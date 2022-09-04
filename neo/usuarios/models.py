@@ -45,7 +45,7 @@ class cliente(models.Model):
     #todos los campos (exepto al campo id_direccion) para facilitar la actualizacion de datos en caso que uno de ellos cambie su
     # direccion
     correo=models.CharField(max_length=320)
-    nacimiento=models.DateField(default="2022-01-01")
+    nacimiento=models.DateField()
 
 class documento(models.Model):
     id_doc=models.AutoField(primary_key=True)
