@@ -8,7 +8,11 @@ from django.http.response import JsonResponse
 
 @csrf_exempt
 def direccionApi(request,id=0):
-    if request.method=='POST':
+    if request.method=='GET':
+        Direccion=direccion.objects.get(id_direccion=id)
+        direccion_serializer=direccionSerializer(Direccion,many=False)
+        return JsonResponse(direccion_serializer.data,safe=False)
+    elif request.method=='POST':
         datos_direccion=JSONParser().parse(request)
         direccion_serializer=direccionSerializer(data=datos_direccion)
         if direccion_serializer.is_valid():
@@ -24,7 +28,7 @@ def direccionApi(request,id=0):
             return JsonResponse("!Actualizado exitosamente¡",safe=False)
         return JsonResponse("No se pudo actualizar",safe=False)
     elif request.method=='DELETE':
-        Direccion=direccion.objects.get(id_cliente=id)
+        Direccion=direccion.objects.get(id_direccion=id)
         Direccion.delete()
         return JsonResponse("Eliminado exitosamente",safe=False)
 
