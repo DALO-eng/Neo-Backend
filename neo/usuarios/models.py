@@ -22,13 +22,14 @@ class cuenta(models.Model):
 
 class direccion(models.Model):
     id_direccion=models.AutoField(primary_key=True)
-    calle=models.CharField(max_length=50,blank=True,null=True)
+    calle=models.IntegerField(blank=True,null=True)
     barrio=models.CharField(max_length=50,blank=True,null=True)
     ciudad=models.CharField(max_length=50)
     casa=models.CharField(max_length=50,blank=True,null=True)
     departamento=models.CharField(max_length=50)
     apartamento=models.ForeignKey(apartamento,on_delete=models.CASCADE,blank=True,null=True)
     vereda=models.CharField(max_length=50,blank=True,null=True)
+    carrera=models.IntegerField(blank=True,null=True)
 
 class tipo_doc(models.Model):
     id_tipo=models.AutoField(primary_key=True)
