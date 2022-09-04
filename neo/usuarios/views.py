@@ -1,9 +1,33 @@
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
-from usuarios.models import cliente,cuenta
-from usuarios.serializers import clienteSerializer,cuentaSerializer
+from usuarios.models import cliente,cuenta,direccion
+from usuarios.serializers import clienteSerializer,cuentaSerializer,direccionSerializer
 from django.http.response import JsonResponse
+#nuevo
+
+@csrf_exempt
+def direccionApi(request,id=0):
+    if request.method=='POST':
+        datos_direccion=JSONParser().parse(request)
+        direccion_serializer=direccionSerializer(data=datos_direccion)
+        if direccion_serializer.is_valid():
+            direccion_serializer.save()
+            return JsonResponse("Guardado exitosamente",safe=False)
+        return JsonResponse('No fue posible guardarlo.',safe=False)
+    elif request.method=='PUT':
+        Direccion_datos=JSONParser().parse(request)
+        dir=direccion.objects.get(id_direccion=Direccion_datos['id_cliente'])
+        direccion_serializer=direccionSerializer(dir,data=Direccion_datos)
+        if direccion_serializer.is_valid():
+            direccion_serializer.save()
+            return JsonResponse("!Actualizado exitosamente¡",safe=False)
+        return JsonResponse("No se pudo actualizar",safe=False)
+    elif request.method=='DELETE':
+        Direccion=direccion.objects.get(id_cliente=id)
+        Direccion.delete()
+        return JsonResponse("Eliminado exitosamente",safe=False)
+
 # Create your views here.
 @csrf_exempt
 def clienteApi(request,id=0):

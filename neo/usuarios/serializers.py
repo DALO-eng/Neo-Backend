@@ -1,6 +1,7 @@
 from dataclasses import fields
 from rest_framework import serializers
-from usuarios.models import cliente,cuenta
+#from neo.usuarios.models import direccion
+from usuarios.models import cliente,cuenta,direccion
 
 class clienteSerializer(serializers.ModelSerializer):
     class Meta:
@@ -25,4 +26,18 @@ class cuentaSerializer(serializers.ModelSerializer):
             'QR',
             'estado',
             'celular'
+            )
+
+class direccionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=direccion
+        fields=(
+            'id_direccion',
+            'calle',
+            'barrio',
+            'ciudad',
+            'casa',
+            'departamento',
+            'apartamento',
+            'carrera'
             )
