@@ -6,6 +6,12 @@ class estado_cuenta(models.Model):
     estado=models.CharField(max_length=10,unique=True)
 #el estado 1 es activo
 
+class apartamento(models.Model):
+    id_apartamento=models.AutoField(primary_key=True)
+    conjunto=models.CharField(max_length=200)
+    bloque=models.CharField(max_length=200,blank=True,null=True)
+    num_apar=models.CharField(max_length=200)
+
 class cuenta(models.Model):
     id_cuenta=models.AutoField(primary_key=True)
     convencional=models.CharField(max_length=100,unique=True)
@@ -21,7 +27,7 @@ class direccion(models.Model):
     ciudad=models.CharField(max_length=50)
     casa=models.CharField(max_length=50,blank=True,null=True)
     departamento=models.CharField(max_length=50)
-    apartamento=models.CharField(max_length=50,blank=True,null=True)
+    apartamento=models.ForeignKey(apartamento,on_delete=models.CASCADE,blank=True,null=True)
     vereda=models.CharField(max_length=50,blank=True,null=True)
 
 class tipo_doc(models.Model):
@@ -38,6 +44,7 @@ class cliente(models.Model):
     #todos los campos (exepto al campo id_direccion) para facilitar la actualizacion de datos en caso que uno de ellos cambie su
     # direccion
     correo=models.CharField(max_length=320)
+    nacimiento=models.DateField(default="2022-01-01")
 
 class documento(models.Model):
     id_doc=models.AutoField(primary_key=True)

@@ -10,10 +10,10 @@ class clienteSerializer(serializers.ModelSerializer):
             'nombre',
             'cuenta',
             'contrasena',
-            'documento',
-            'tipo_doc',
             'direccion',
-            'correo')
+            'correo',
+            'nacimiento'
+            )
 
 class cuentaSerializer(serializers.ModelSerializer):
     class Meta:
@@ -22,4 +22,7 @@ class cuentaSerializer(serializers.ModelSerializer):
             'id_cuenta',
             'convencional',
             'saldo_principal',
-            'QR')
+            'QR',
+            'estado',
+            'celular'
+            )
