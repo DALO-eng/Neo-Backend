@@ -4,14 +4,15 @@ from django.db import models
 class estado_cuenta(models.Model):
     id_estado=models.AutoField(primary_key=True)
     estado=models.CharField(max_length=10,unique=True)
-#el estado 0 es activo
+#el estado 1 es activo
 
 class cuenta(models.Model):
     id_cuenta=models.AutoField(primary_key=True)
     convencional=models.CharField(max_length=100,unique=True)
-    saldo_principal=models.IntegerField(default=0)
+    saldo_principal=models.IntegerField(default = 0)
     QR=models.CharField(max_length=100,blank=True,null=True,unique=True)
-    estado=models.ForeignKey(estado_cuenta,on_delete=models.PROTECT)#no se puede eliminar el tipo de estado de la cuenta a la que se apunta
+    estado=models.ForeignKey(estado_cuenta,on_delete=models.PROTECT,default=1)#no se puede eliminar el tipo de estado de la cuenta a la que se apunta
+    celular=models.CharField(max_length=10,unique=True)
 
 class direccion(models.Model):
     id_direccion=models.AutoField(primary_key=True)
