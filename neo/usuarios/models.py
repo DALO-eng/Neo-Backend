@@ -15,10 +15,9 @@ class apartamento(models.Model):
 class cuenta(models.Model):
     id_cuenta=models.AutoField(primary_key=True)
     convencional=models.CharField(max_length=100,unique=True)
-    saldo_principal=models.IntegerField(default = 0)
-    QR=models.CharField(max_length=100,blank=True,null=True,unique=True)
     estado=models.ForeignKey(estado_cuenta,on_delete=models.PROTECT,default=1)#no se puede eliminar el tipo de estado de la cuenta a la que se apunta
     celular=models.CharField(max_length=10,unique=True)
+    contrasena=models.CharField(max_length=4)
 
 class direccion(models.Model):
     id_direccion=models.AutoField(primary_key=True)
@@ -39,7 +38,6 @@ class cliente(models.Model):
     id_cliente=models.AutoField(primary_key=True)
     nombre=models.CharField(max_length=100)
     cuenta=models.OneToOneField(cuenta,on_delete=models.CASCADE)#al eliminar la cuenta se elimina también la persona
-    contrasena=models.CharField(max_length=4)
     direccion=models.OneToOneField(direccion,blank=True,null=True,on_delete=models.SET_NULL)#Se hace nulo si se elimina la direccion
     #aunque dos usuarios vivan en la misma direccion, este campo apuntara a tablas diferentes aunque tengan los mismos valores en
     #todos los campos (exepto al campo id_direccion) para facilitar la actualizacion de datos en caso que uno de ellos cambie su
@@ -53,3 +51,22 @@ class documento(models.Model):
     expedicion=models.DateField()#fecha de expedicion
     tipo=models.ForeignKey(tipo_doc,on_delete=models.PROTECT)#no se puede eliminar el tipo de documento al que hace referencia
     nombre=models.OneToOneField(cliente,on_delete=models.CASCADE)#al eliminar al cliente, tambien se eliminara su documento
+
+class bolsillo(models.Model):
+    id_bol=models.AutoField(primary_key=True)
+    principal=models.BooleanField(default=False)
+    cuenta=models.ForeignKey(cuenta,on_delete=models.CASCADE)#al eliminar la cuenta se elimina tambien el bolsillo
+    monto=models.IntegerField(default=0)
+    nombre=models.CharField(max_length=10)
+    QR=models.CharField(max_length=100,blank=True,null=True,unique=True)
+
+class envio(models.Model):
+    id_envio=models.AutoField(primary_key=True)
+    envia=models.ForeignKey(bolsillo,on_delete=models.DO_NOTHING)
+    fecha=models.DateField()
+    IP_envia=models.CharField(max_length=128)
+    monto=models.IntegerField()
+
+class recibe(models.Model):
+    recibe=models.ForeignKey(bolsillo,on_delete=models.DO_NOTHING)
+    id_envio=models.OneToOneField(envio,on_delete=models.DO_NOTHING,primary_key=True)    

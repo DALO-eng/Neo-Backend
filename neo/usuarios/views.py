@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from usuarios.models import cliente,cuenta,direccion
-from usuarios.serializers import clienteSerializer,cuentaSerializer,direccionSerializer
+from usuarios.serializers import clienteSerializer,cuentaSerializer,direccionSerializer,envioSerializer,recibeSerializer
 from django.http.response import JsonResponse
 from datetime import date
 from datetime import datetime
@@ -74,6 +74,35 @@ def cuentaApi(request,id=0):
     elif request.method=='POST':
         datos_cuenta=JSONParser().parse(request)
         cuenta_serializer=cuentaSerializer(data=datos_cuenta)
+        if cuenta_serializer.is_valid():
+            cuenta_serializer.save()
+            return JsonResponse("Guardado exitosamente",safe=False)
+        return JsonResponse('No fue posible guardarlo.',safe=False)
+    elif request.method=='PUT':
+        cuenta_datos=JSONParser().parse(request)
+        cuent=cuenta.objects.get(id_cuenta=cuenta_datos['id_cuenta'])
+        cuenta_serializer=cuentaSerializer(cuent,data=cuenta_datos)
+        if cuenta_serializer.is_valid():
+            cuenta_serializer.save()
+            return JsonResponse("!Actualizado exitosamente¡",safe=False)
+        return JsonResponse("No se pudo actualizar",safe=False)
+    elif request.method=='DELETE':
+        Cuenta=cuenta.objects.get(id_cuenta=id)
+        Cuenta.delete()
+        return JsonResponse("Eliminado exitosamente",safe=False)
+
+#transaccion
+@csrf_exempt
+def cuentaApi(request,id=0):
+    if request.method=='GET':
+        Cuenta=cuenta.objects.all()
+        cuenta_serializer=cuentaSerializer(Cuenta,many=True)
+        return JsonResponse(cuenta_serializer.data,safe=False)
+    elif request.method=='POST':
+        datos_envio=JSONParser().parse(request)['enviar']
+        datos_recibe=JSONParser().parse(request)['recibir']
+        envio_serializer=envioSerializer(data=datos_envio)
+        recibe_serializer=JSONParser().parse(request)['']
         if cuenta_serializer.is_valid():
             cuenta_serializer.save()
             return JsonResponse("Guardado exitosamente",safe=False)

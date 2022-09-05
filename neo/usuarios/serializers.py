@@ -25,8 +25,10 @@ class cuentaSerializer(serializers.ModelSerializer):
             'saldo_principal',
             'QR',
             'estado',
-            'celular'
+            'celular',
+            'contrasena'
             )
+
 
 class direccionSerializer(serializers.ModelSerializer):
     class Meta:
