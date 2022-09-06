@@ -48,7 +48,7 @@ class documento(models.Model):
     id_doc=models.AutoField(primary_key=True)
     numero=models.CharField(max_length=100,unique=True)
     expedicion=models.DateField()#fecha de expedicion
-    tipo=models.ForeignKey(tipo_doc,on_delete=models.PROTECT)#no se puede eliminar el tipo de documento al que hace referencia
+    tipo=models.ForeignKey(tipo_doc,blank=True,default=1,on_delete=models.PROTECT)#no se puede eliminar el tipo de documento al que hace referencia
     nombre=models.OneToOneField(cliente,on_delete=models.CASCADE)#al eliminar al cliente, tambien se eliminara su documento
 
 class bolsillo(models.Model):

@@ -2,7 +2,7 @@ from dataclasses import fields
 from rest_framework import serializers
 from usuarios.models import envio
 #from neo.usuarios.models import direccion
-from usuarios.models import cliente,cuenta,direccion
+from usuarios.models import cliente,cuenta,direccion,documento
 
 class clienteSerializer(serializers.ModelSerializer):
     class Meta:
@@ -15,6 +15,17 @@ class clienteSerializer(serializers.ModelSerializer):
             'correo',
             'nacimiento'
             )
+
+class documentoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=documento
+        fields=(
+            'id_doc',
+            'numero',
+            'expedicion',
+            'tipo',
+            'nombre'
+        )
 
 class cuentaSerializer(serializers.ModelSerializer):
     class Meta:

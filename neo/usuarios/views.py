@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
-from usuarios.models import cliente,cuenta,direccion,bolsillo
-from usuarios.serializers import clienteSerializer,cuentaSerializer,direccionSerializer#,envioSerializer,recibeSerializer
+from usuarios.models import cliente,cuenta,direccion,bolsillo,documento
+from usuarios.serializers import clienteSerializer,cuentaSerializer,direccionSerializer,documentoSerializer#,envioSerializer,recibeSerializer
 from django.http.response import JsonResponse
 from datetime import date
 from datetime import datetime
@@ -97,6 +97,7 @@ def logeo(request):
         datos=JSONParser().parse(request)
         datos_cuenta=datos["cuenta"]
         datos_cliente=datos["cliente"]
+        datos_doc=datos["documento"]
         cuenta_serializer=cuentaSerializer(data=datos_cuenta)
         if cuenta_serializer.is_valid():
             cuenta_serializer.save()#se crea primero la cuenta
@@ -106,7 +107,17 @@ def logeo(request):
             cliente_serializer=clienteSerializer(data=datos_cliente)
             if cliente_serializer.is_valid():
                 cliente_serializer.save()
-                return JsonResponse("Bienvenido a la familia Neo, tu registro fue exitoso",safe=False)
+                client=cliente.objects.get(cuenta=id)
+                nom=clienteSerializer(client,many=False).data['id_cliente']
+                datos_doc['nombre']=nom
+                documento_serializer=documentoSerializer(data=datos_doc)
+                if documento_serializer.is_valid():
+                    documento_serializer.save()
+                    return JsonResponse("Bienvenido a la familia Neo, tu registro fue exitoso",safe=False)
+                else:
+                    client.delete()
+                    cuent.delete()
+                    return JsonResponse("algo fallo en los datos de documento",safe=False)
             else:
                 cuent.delete()#se elimina la cuenta recien creada
                 return JsonResponse("Hubo un error en el registro de datos personales",safe=False)
