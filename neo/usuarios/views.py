@@ -6,6 +6,7 @@ from usuarios.serializers import clienteSerializer,cuentaSerializer,direccionSer
 from django.http.response import JsonResponse
 from datetime import date
 from datetime import datetime
+import uuid
 #nuevo
 
 @csrf_exempt
@@ -123,5 +124,22 @@ def logeo(request):
                 return JsonResponse("Hubo un error en el registro de datos personales",safe=False)
         else:
             return JsonResponse("Datos de acceso a la cuenta incorrectos",safe=False)
+    else:
+        return JsonResponse("Error en el tipo de solicitud, vuelva a intentarlo",safe=False)
+
+#logeo
+@csrf_exempt
+def login(request):
+    if request.method=='GET':
+        datos=JSONParser().parse(request)
+        cuent=cuenta.objects.get(celular=datos['numero'])
+        if cuent==None:
+            return JsonResponse("Esa cuenta no existe",safe=False)
+        else:
+            cuenta_serializer=cuentaSerializer(cuent,many=False)
+            if cuenta_serializer.data['contrasena']==datos['contrasena']:
+                return JsonResponse(uuid.uuid4(),safe=False)
+            else:
+                return JsonResponse("clave de acceso incorrecta",safe=False)
     else:
         return JsonResponse("Error en el tipo de solicitud, vuelva a intentarlo",safe=False)
