@@ -8,6 +8,5 @@ urlpatterns=[
     re_path(r'^cuenta/([0-9]+)$',views.cuentaApi),
     re_path(r'^dir/$',views.direccionApi),
     re_path(r'^dir/([0-9]+)$',views.direccionApi),
-    re_path(r'^login$', LoginView.as_view(), name= 'login'),
-    re_path(r'^logout$', LogoutView.as_view(), name= 'logout')
+    re_path(r'^login/$', views.logeo)
 ]

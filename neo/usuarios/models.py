@@ -14,8 +14,7 @@ class apartamento(models.Model):
 
 class cuenta(models.Model):
     id_cuenta=models.AutoField(primary_key=True)
-    convencional=models.CharField(max_length=100,unique=True)
-    estado=models.ForeignKey(estado_cuenta,on_delete=models.PROTECT,default=1)#no se puede eliminar el tipo de estado de la cuenta a la que se apunta
+    estado=models.ForeignKey(estado_cuenta,on_delete=models.PROTECT,blank=True,default=1)#no se puede eliminar el tipo de estado de la cuenta a la que se apunta
     celular=models.CharField(max_length=10,unique=True)
     contrasena=models.CharField(max_length=4)
 
