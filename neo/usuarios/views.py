@@ -132,7 +132,7 @@ def logeo(request):
 def login(request):
     if request.method=='GET':
         datos=JSONParser().parse(request)
-        cuent=cuenta.objects.get(celular=datos['numero'])
+        cuent=cuenta.objects.filter(celular=datos['numero']).first()
         if cuent==None:
             return JsonResponse("Esa cuenta no existe",safe=False)
         else:
