@@ -90,7 +90,7 @@ def cuentaApi(request,id=0):
         Cuenta=cuenta.objects.get(id_cuenta=id)
         Cuenta.delete()
         return JsonResponse("Eliminado exitosamente",safe=False)
-#logeo
+#registro
 @csrf_exempt
 def logeo(request):
     if request.method=='POST':
