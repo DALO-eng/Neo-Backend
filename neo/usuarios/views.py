@@ -2,11 +2,12 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from usuarios.models import cliente,cuenta,bolsillo,documento
-from usuarios.serializers import clienteSerializer,cuentaSerializer,documentoSerializer#,envioSerializer,recibeSerializer
+from usuarios.serializers import clienteSerializer,cuentaSerializer,documentoSerializer,bolsilloSerializer
 from django.http.response import JsonResponse
 from datetime import date
 from datetime import datetime
 import uuid
+import json
 
 # Create your views here.
 @csrf_exempt
@@ -87,7 +88,17 @@ def logeo(request):
                 documento_serializer=documentoSerializer(data=datos_doc)
                 if documento_serializer.is_valid():
                     documento_serializer.save()
+                    #bolsillo_serializer=bolsilloSerializer(data=json.dumps({'cuenta':id}))#se crea el bolsillo principal para la cuenta
+                    #if bolsillo_serializer.is_valid():
+                        #bolsillo_serializer.save()
                     return JsonResponse("Bienvenido a la familia Neo, tu registro fue exitoso",safe=False)
+                    #else:
+                        #client.delete()
+                        #cuent.delete()
+                        #a=documento.objects.get(numero=datos_doc["numero"])
+                        #a=documentoSerializer(a,many=False)
+                        #a.delete()
+                        #return JsonResponse("No se pudo crear el bolsillo principal",safe=False)
                 else:
                     client.delete()
                     cuent.delete()

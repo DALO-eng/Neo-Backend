@@ -32,11 +32,10 @@ class documento(models.Model):
 
 class bolsillo(models.Model):
     id_bol=models.AutoField(primary_key=True)
-    principal=models.BooleanField(default=False)
     cuenta=models.ForeignKey(cuenta,on_delete=models.CASCADE)#al eliminar la cuenta se elimina tambien el bolsillo
-    monto=models.IntegerField(default=0)
-    nombre=models.CharField(max_length=10)
-    QR=models.CharField(max_length=100,blank=True,null=True,unique=True)
+    monto=models.IntegerField(blank=True,default=0)
+    nombre=models.CharField(blank=True,default="principal",max_length=10)
+    QR=models.CharField(max_length=500,blank=True,null=True,unique=True)
 
 class envio(models.Model):
     id_envio=models.AutoField(primary_key=True)
