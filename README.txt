@@ -38,7 +38,9 @@ Registrer:
 Logeo:
 
     - Enlace: http://127.0.0.1:8000/login/
+
     - Tipo de solicitud: GET
+
     - Formato JSON:
         {
             "numero":"",
@@ -50,10 +52,13 @@ Logeo:
             "contrasena":"1234"
         }
     -Restricciones:
+
         ♠ El campo "numero" debe tener un maximo de 10 caracteres.
         ♠ El campo "contrasena" debe tener un maximo de 4 caracteres.
         ♠ Ambos campos son obligatorios
+
     - Indicaciones:
+    
         ♠ En caso que el logeo no sea correcto, se retornará un mensaje de error (uno de esos errores posibles es el tipo de solicitud)
         ♠ En caso de logeo correcto, lo único que hace la solicitud es retornar una cadena pseudoaleatoria para que el navegador pueda controlar el
         inicio de sesión. Por ahora solo la retorna, no la almacena ni hace ningún tipo de registro o función adicional.
