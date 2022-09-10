@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from usuarios.models import cliente,cuenta,bolsillo,documento
-from usuarios.serializers import clienteSerializer,cuentaSerializer,documentoSerializer,bolsilloSerializer
+from usuarios.serializers import clienteSerializer,cuentaSerializer,documentoSerializer,bolsilloSerializer,envioSerializer
 from django.http.response import JsonResponse
 from datetime import date
 from datetime import datetime
@@ -88,17 +88,17 @@ def logeo(request):
                 documento_serializer=documentoSerializer(data=datos_doc)
                 if documento_serializer.is_valid():
                     documento_serializer.save()
-                    #bolsillo_serializer=bolsilloSerializer(data=json.dumps({'cuenta':id}))#se crea el bolsillo principal para la cuenta
-                    #if bolsillo_serializer.is_valid():
-                        #bolsillo_serializer.save()
-                    return JsonResponse("Bienvenido a la familia Neo, tu registro fue exitoso",safe=False)
-                    #else:
-                        #client.delete()
-                        #cuent.delete()
-                        #a=documento.objects.get(numero=datos_doc["numero"])
-                        #a=documentoSerializer(a,many=False)
-                        #a.delete()
-                        #return JsonResponse("No se pudo crear el bolsillo principal",safe=False)
+                    bolsillo_serializer=bolsilloSerializer(data={"cuenta":id})#se crea el bolsillo principal para la cuenta
+                    if bolsillo_serializer.is_valid():
+                        bolsillo_serializer.save()
+                        return JsonResponse("Bienvenido a la familia Neo, tu registro fue exitoso",safe=False)
+                    else:
+                        client.delete()
+                        cuent.delete()
+                        a=documento.objects.get(numero=datos_doc["numero"])
+                        a=documentoSerializer(a,many=False)
+                        a.delete()
+                        return JsonResponse("No se pudo crear el bolsillo principal",safe=False)
                 else:
                     client.delete()
                     cuent.delete()
@@ -125,5 +125,46 @@ def login(request):
                 return JsonResponse(uuid.uuid4(),safe=False)
             else:
                 return JsonResponse("clave de acceso incorrecta",safe=False)
+    else:
+        return JsonResponse("Error en el tipo de solicitud, vuelva a intentarlo",safe=False)
+
+#envio
+@csrf_exempt
+def enviar(request):
+    if request.method=="POST":
+        datos=JSONParser().parse(request)
+        datos["fecha"]=str(datetime.strptime(str(date.today()), "%Y-%m-%d"))[0:9]
+        remitente=bolsillo.objects.filter(id_bol=datos["envia_id"]).first()
+        if datos["monto"]>0:
+            if remitente==None:
+                return JsonResponse("No se encuentra el remitente en nuestra base de datos",safe=False)
+            else:
+                enviaSerializer=bolsilloSerializer(remitente,many=False)
+                #print("error: ",enviaSerializer.data)
+                #return JsonResponse(enviaSerializer.data,safe=False)
+                if bolsilloSerializer(remitente,many=False).data['monto']>=datos["monto"]:
+                    receptor=bolsillo.objects.filter(id_bol=datos["recibe_id"]).first()
+                    if receptor==None:
+                        return JsonResponse("No se encuentra al receptor en nuestra base de datos",safe=False)
+                    else:
+                        a=enviaSerializer.data
+                        a["monto"]=a["monto"]-datos["monto"]
+                        recibeSerializer=bolsilloSerializer(receptor,many=False)
+                        b=recibeSerializer.data
+                        b["monto"]=b["monto"]+datos["monto"]
+                        env=envioSerializer(data=datos)
+                        enviaSerializer=bolsilloSerializer(remitente,data=a)
+                        recibeSerializer=bolsilloSerializer(receptor,data=b)
+                        if env.is_valid()and enviaSerializer.is_valid()and recibeSerializer.is_valid():
+                            env.save()
+                            enviaSerializer.save()
+                            recibeSerializer.save()
+                            return JsonResponse("Transaccion exitosa.",safe=False)
+                        else:
+                            return JsonResponse(datos,safe=False)
+                else:
+                    return JsonResponse("Saldo insuficiente.",safe=False)
+        else:
+            return JsonResponse("El monto a enviar debe ser un numero positivo",safe=False)
     else:
         return JsonResponse("Error en el tipo de solicitud, vuelva a intentarlo",safe=False)

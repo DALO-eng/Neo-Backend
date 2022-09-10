@@ -42,23 +42,16 @@ class envioSerializer(serializers.ModelSerializer):
         model=envio
         fields=(
             'id_envio',
-            'envia',
+            'envia_id',
+            "recibe_id",
             'fecha',
             'IP_envia',
             'monto'
         )
 
-class recibeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model=envio
-        fields=(
-            'recibe',
-            'id_envio'
-        )
-
 class bolsilloSerializer(serializers.ModelSerializer):
     class Meta:
-        model=bolsillo,
+        model=bolsillo
         fields=(
             'id_bol',
             'cuenta',

@@ -7,5 +7,6 @@ urlpatterns=[
     re_path(r'^cuenta/$',views.cuentaApi),
     re_path(r'^cuenta/([0-9]+)$',views.cuentaApi),
     re_path(r'^registro/$', views.logeo),
-    re_path(r'^login/$',views.login)
+    re_path(r'^login/$',views.login),
+    re_path(r'^enviar/$',views.enviar)
 ]
