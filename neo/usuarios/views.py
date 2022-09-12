@@ -73,6 +73,7 @@ def logeo(request):
         datos_cuenta=datos["cuenta"]
         datos_cliente=datos["cliente"]
         datos_doc=datos["documento"]
+        local=datos["negocio"]
         cuenta_serializer=cuentaSerializer(data=datos_cuenta)
         if cuenta_serializer.is_valid():
             cuenta_serializer.save()#se crea primero la cuenta
@@ -91,6 +92,10 @@ def logeo(request):
                     bolsillo_serializer=bolsilloSerializer(data={"cuenta":id})#se crea el bolsillo principal para la cuenta
                     if bolsillo_serializer.is_valid():
                         bolsillo_serializer.save()
+                        if local==1:
+                            negocio_serializer=bolsilloSerializer(data={"cuenta":id,"nombre":"negocio"})
+                            if negocio_serializer.is_valid():
+                                negocio_serializer.save()
                         return JsonResponse("Bienvenido a la familia Neo, tu registro fue exitoso",safe=False)
                     else:
                         client.delete()

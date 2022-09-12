@@ -1,4 +1,4 @@
-Activar entorno virtual: myenv\Scripts\activate
+Activar entorno virtual: env\Scripts\activate
 Encender el servidor: python neo\manage.py runserver
 actualizar la BD: python neo\manage.py makemigrations usuarios
 guardar cambios: python neo\manage.py migrate usuarios
@@ -14,13 +14,15 @@ Registrer:
     {
         "cuenta":{"celular":"","contrasena":""},
         "cliente":{"nombre":"","correo":"","nacimiento":""},
-        "documento":{"numero":"","expedicion":"","tipo":}
+        "documento":{"numero":"","expedicion":"","tipo":},
+        "negocio":
     }
     Ejemplo:
     {
         "cuenta":{"celular":"3142612626","contrasena":"7777"},
         "cliente":{"nombre":"Soila Rosa","correo":"soila@mail.com","nacimiento":"2001-12-17"},
-        "documento":{"numero":"44444","expedicion":"2001-03-06"}
+        "documento":{"numero":"44444","expedicion":"2001-03-06"},
+        "negocio":1
     }
     -Restricciones:
 
@@ -34,6 +36,8 @@ Registrer:
         ♠ El campo nacimiento corresponde a la fecha de nacimiento del cliente.
         ♠ El campo tipo puede tener los valores 1, 2 o 3 (es una llave foránea), dónde 1 es cédula de ciudadanía, 2 cédula de extranjeria y 3 pasaporte
         (como no se aceptan menores de edad no se admitirán documentos de tipo registro civil ni tarjeta de identidad, valga la aclaración).
+        ♠ El campo "negocio" indica si el cliente quiere crear un bolsillo destinado a negocio al momento de crear la cuenta; si es 1 se crea dicho
+        bolsillo, si es cualquier otro valor no se creará (en el caso del ejemplo si se creó el bolsillo)
 
 Logeo:
 
