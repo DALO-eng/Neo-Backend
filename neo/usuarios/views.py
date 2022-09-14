@@ -8,6 +8,7 @@ from datetime import date
 from datetime import datetime
 import uuid
 import json
+from rest_framework.exceptions import AuthenticationFailed
 
 # Create your views here.
 @csrf_exempt
