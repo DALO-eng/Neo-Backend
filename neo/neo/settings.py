@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken'
 ]
 
+
 CORS_ORIGIN_ALLOW_ALL=True
 
 MIDDLEWARE = [
@@ -88,6 +89,7 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
 
 
 # Password validation

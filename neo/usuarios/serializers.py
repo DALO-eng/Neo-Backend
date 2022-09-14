@@ -7,13 +7,13 @@ from usuarios.models import cliente,cuenta,documento,bolsillo
 class clienteSerializer(serializers.ModelSerializer):
     class Meta:
         model=cliente
-        fields=(
+        fields=[
             'id_cliente',
             'nombre',
             'cuenta',
             'correo',
             'nacimiento'
-            )
+        ]
 
 class documentoSerializer(serializers.ModelSerializer):
     class Meta:
@@ -35,6 +35,15 @@ class cuentaSerializer(serializers.ModelSerializer):
             'celular',
             'contrasena'
             )
+        extra_kwargs = {'password': {'write_only': True}}
+
+    def create(self, validated_data):
+        user = cuenta(
+            celular=validated_data['celular']
+        )
+        user.set_password(validated_data['contrasena'])
+        user.save()
+        return user
 
 
 class envioSerializer(serializers.ModelSerializer):
