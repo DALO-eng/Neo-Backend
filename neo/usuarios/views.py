@@ -98,78 +98,116 @@ def logeo(request):
                                 negocio_serializer.save()
                         return JsonResponse("Bienvenido a la familia Neo, tu registro fue exitoso",safe=False)
                     else:
+                        try:
+                            f=3/0
+                        except ZeroDivisionError:
+                            client.delete()
+                            cuent.delete()
+                            a=documento.objects.get(numero=datos_doc["numero"])
+                            a=documentoSerializer(a,many=False)
+                            a.delete()
+                            return JsonResponse("No se pudo crear el bolsillo principal",safe=False)
+                else:
+                    try:
+                        f=3/0
+                    except ZeroDivisionError:
                         client.delete()
                         cuent.delete()
-                        a=documento.objects.get(numero=datos_doc["numero"])
-                        a=documentoSerializer(a,many=False)
-                        a.delete()
-                        return JsonResponse("No se pudo crear el bolsillo principal",safe=False)
-                else:
-                    client.delete()
-                    cuent.delete()
-                    return JsonResponse("algo fallo en los datos de documento",safe=False)
+                        return JsonResponse("algo fallo en los datos de documento",safe=False)
             else:
-                cuent.delete()#se elimina la cuenta recien creada
-                return JsonResponse("Hubo un error en el registro de datos personales",safe=False)
+                try:
+                    f=3/0
+                except ZeroDivisionError:
+                    cuent.delete()#se elimina la cuenta recien creada
+                    return JsonResponse("Hubo un error en el registro de datos personales",safe=False)
         else:
-            return JsonResponse("Datos de acceso a la cuenta incorrectos",safe=False)
+            try:
+                f=3/0
+            except ZeroDivisionError:
+                return JsonResponse("Datos de acceso a la cuenta incorrectos",safe=False)
     else:
-        return JsonResponse("Error en el tipo de solicitud, vuelva a intentarlo",safe=False)
+        try:
+            f=3/0
+        except ZeroDivisionError:
+            return JsonResponse("Error en el tipo de solicitud, vuelva a intentarlo",safe=False)
 
 #logeo
 @csrf_exempt
 def login(request):
     if request.method=='GET':
         datos=JSONParser().parse(request)
-        cuent=cuenta.objects.filter(celular=datos['numero']).first()
-        if cuent==None:
+        try:
+            cuent=cuenta.objects.get(celular=datos['numero'])
+        except ValueError:
             return JsonResponse("Esa cuenta no existe",safe=False)
         else:
             cuenta_serializer=cuentaSerializer(cuent,many=False)
             if cuenta_serializer.data['contrasena']==datos['contrasena']:
                 return JsonResponse(uuid.uuid4(),safe=False)
             else:
-                return JsonResponse("clave de acceso incorrecta",safe=False)
+                try:
+                    f=3/0
+                except ValueError:
+                    return JsonResponse("clave de acceso incorrecta",safe=False)
     else:
-        return JsonResponse("Error en el tipo de solicitud, vuelva a intentarlo",safe=False)
+        try:
+            f=3/0
+        except ValueError:
+            return JsonResponse("Error en el tipo de solicitud, vuelva a intentarlo",safe=False)
 
 #envio
 @csrf_exempt
 def enviar(request):
     if request.method=="POST":
         datos=JSONParser().parse(request)
-        datos["fecha"]=str(datetime.strptime(str(date.today()), "%Y-%m-%d"))[0:9]
-        remitente=bolsillo.objects.filter(id_bol=datos["envia_id"]).first()
-        if datos["monto"]>0:
-            if remitente==None:
-                return JsonResponse("No se encuentra el remitente en nuestra base de datos",safe=False)
-            else:
-                enviaSerializer=bolsilloSerializer(remitente,many=False)
-                #print("error: ",enviaSerializer.data)
-                #return JsonResponse(enviaSerializer.data,safe=False)
-                if bolsilloSerializer(remitente,many=False).data['monto']>=datos["monto"]:
-                    receptor=bolsillo.objects.filter(id_bol=datos["recibe_id"]).first()
-                    if receptor==None:
-                        return JsonResponse("No se encuentra al receptor en nuestra base de datos",safe=False)
-                    else:
-                        a=enviaSerializer.data
-                        a["monto"]=a["monto"]-datos["monto"]
-                        recibeSerializer=bolsilloSerializer(receptor,many=False)
-                        b=recibeSerializer.data
-                        b["monto"]=b["monto"]+datos["monto"]
-                        env=envioSerializer(data=datos)
-                        enviaSerializer=bolsilloSerializer(remitente,data=a)
-                        recibeSerializer=bolsilloSerializer(receptor,data=b)
-                        if env.is_valid()and enviaSerializer.is_valid()and recibeSerializer.is_valid():
-                            env.save()
-                            enviaSerializer.save()
-                            recibeSerializer.save()
-                            return JsonResponse("Transaccion exitosa.",safe=False)
-                        else:
-                            return JsonResponse(datos,safe=False)
-                else:
-                    return JsonResponse("Saldo insuficiente.",safe=False)
+        try:
+            datos["fecha"]=str(datetime.strptime(str(date.today()), "%Y-%m-%d"))[0:9]
+        except ValueError:
+            return JsonResponse("El formato de la fecha no es valido",safe=False)
         else:
-            return JsonResponse("El monto a enviar debe ser un numero positivo",safe=False)
+            if datos["monto"]>0:
+                try:
+                    remitente=bolsillo.objects.get(id_bol=datos["envia_id"])
+                except:
+                    return JsonResponse("No se encuentra el remitente en nuestra base de datos",safe=False)
+                else:
+                    enviaSerializer=bolsilloSerializer(remitente,many=False)
+                    if bolsilloSerializer(remitente,many=False).data['monto']>=datos["monto"]:
+                        try:
+                            receptor=bolsillo.objects.get(id_bol=datos["recibe_id"])
+                        except ValueError:
+                            return JsonResponse("No se encuentra al receptor en nuestra base de datos",safe=False)
+                        else:
+                            a=enviaSerializer.data
+                            a["monto"]=a["monto"]-datos["monto"]
+                            recibeSerializer=bolsilloSerializer(receptor,many=False)
+                            b=recibeSerializer.data
+                            b["monto"]=b["monto"]+datos["monto"]
+                            env=envioSerializer(data=datos)
+                            enviaSerializer=bolsilloSerializer(remitente,data=a)
+                            recibeSerializer=bolsilloSerializer(receptor,data=b)
+                            if env.is_valid()and enviaSerializer.is_valid()and recibeSerializer.is_valid():
+                                env.save()
+                                enviaSerializer.save()
+                                recibeSerializer.save()
+                                return JsonResponse("Transaccion exitosa.",safe=False)
+                            else:
+                                try:
+                                    f=3/0
+                                except ZeroDivisionError:
+                                    return JsonResponse("hubo un error inesperado, lo sentimos",safe=False)
+                    else:
+                        try:
+                            f=3/0
+                        except ZeroDivisionError:
+                            return JsonResponse("Saldo insuficiente.",safe=False)
+            else:
+                try:
+                    f=3/0
+                except ZeroDivisionError:
+                    return JsonResponse("El monto a enviar debe ser un numero positivo",safe=False)
     else:
-        return JsonResponse("Error en el tipo de solicitud, vuelva a intentarlo",safe=False)
+        try:
+            f=3/0
+        except ZeroDivisionError:
+            return JsonResponse("Error en el tipo de solicitud, vuelva a intentarlo",safe=False)

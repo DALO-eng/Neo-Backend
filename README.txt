@@ -3,6 +3,16 @@ Encender el servidor: python neo\manage.py runserver
 actualizar la BD: python neo\manage.py makemigrations usuarios
 guardar cambios: python neo\manage.py migrate usuarios
 
+Instrucciones para hacer deploy:
+1. Descargar el repositorio
+2. Abrir la terminal en la carpeta donde se encuentra el manage.py
+3. heroku login
+4. git init
+5. heroku git:remote -a neo-bank-project
+6. git add .
+7. git commit -am "message"
+8. git push -f heroku master
+
 ADVERTENCIA: Las Restricciones que se presentan en las solitudes son unicamente las que se validan por parte de Backend de la pagina. En la parte de
 Fronent hay restricciones para las variables.
 
