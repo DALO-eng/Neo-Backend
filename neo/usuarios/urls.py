@@ -10,5 +10,6 @@ urlpatterns=[
     re_path(r'^registro/$', views.logeo),
     re_path(r'^login/$',views.login),
     re_path(r'^enviar/$',views.enviar),
-    re_path(r"^nuevoLog/$",ObtainAuthToken.as_view())
+    re_path(r"^nuevoLog/$",ObtainAuthToken.as_view()),
+    re_path(r"^bol/$",views.bol)
 ]

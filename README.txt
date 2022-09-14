@@ -108,3 +108,18 @@ Envio:
     Nota: el nombre secundario del bolsillo que envia es un nombre personalizado que se agrego por medio de consultas sql.
 
     -En caso de exito el mensage que se retornara es "Transaccion exitosa."
+
+Bolsillos:
+
+    -Método: POST
+
+    -Enlace: http://127.0.0.1:8000/bol/
+
+    -Formato del JSON: {"cuenta":}
+
+    -Indicaciones: debe pasarsele en el valor del campo "cuenta" el ID de la cuenta a la cual se le quieren averiguar los bolsillos.
+
+    -Ejemplo: {"cuenta":29}
+
+    -Si se encuentran bolsillos para la cuenta se retornará una lista con los JSON de cada bolsillo, si no se encuetra ninguno se retornará una lista
+    vacía.

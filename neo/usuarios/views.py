@@ -209,7 +209,11 @@ def enviar(request):
 #bolsillos
 @csrf_exempt
 def bol(request):
-    if request.method=="GET":
-        bols=bolsillo.objects.filter(cuenta)
+    if request.method=="POST":
+        datos=JSONParser().parse(request)
+        cuentID=datos["cuenta"]
+        bols=bolsillo.objects.filter(cuenta_id=cuentID)
+        bolSerializer=bolsilloSerializer(bols,many=True)
+        return JsonResponse(bolSerializer.data,safe=False)
     else:
-        return JsonResponse("El metodo para esta peticion debe ser GET.")
+        return JsonResponse("El metodo para esta peticion debe ser POST.",safe=False)
