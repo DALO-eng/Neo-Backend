@@ -79,3 +79,32 @@ Logeo:
         ♠ En caso que el logeo no sea correcto, se retornará un mensaje de error (uno de esos errores posibles es el tipo de solicitud)
         ♠ En caso de logeo correcto, lo único que hace la solicitud es retornar una cadena pseudoaleatoria para que el navegador pueda controlar el
         inicio de sesión. Por ahora solo la retorna, no la almacena ni hace ningún tipo de registro o función adicional.
+
+Envio:
+
+    -Enlace: http://127.0.0.1:8000/enviar/
+
+    -Tipo de solicitud: POST
+
+    -Formato JSON:
+        {
+            "envia":{"id_cuenta":,"nombre":},
+            "recibe":{"celular":,"nombre":},
+            "monto":
+        }
+
+    - indicaciones:
+        ♠ Los datos del campo "envia" son el ID de la cuenta que va a enviar el dinero (el cual se recibe al momento de iniciar sesion) y
+        el nombre del bolsillo desde el que se va a enviar. Si es el bolsillo principal su nombre será "principal" y si es el bolsillo de negocio
+        su nombre será "negocio" (lo mismo aplica para el bolsillo remitente).
+        ♠ Los datos del campo recibe son el numero celular del receptor del dienro y el nombre del bolsillo al cual se le enviara.
+    -Ejemplo de envio valido:
+    {
+    "envia":{"id_cuenta":10,"nombre":"secundario"},
+    "recibe":{"celular":3228829696,"nombre":"principal"},
+    "monto":1
+    }
+
+    Nota: el nombre secundario del bolsillo que envia es un nombre personalizado que se agrego por medio de consultas sql.
+
+    -En caso de exito el mensage que se retornara es "Transaccion exitosa."

@@ -42,5 +42,4 @@ class envio(models.Model):
     envia_id=models.ForeignKey(bolsillo,on_delete=models.DO_NOTHING,related_name="%(class)s_envia")
     recibe_id=models.ForeignKey(bolsillo,on_delete=models.DO_NOTHING,related_name="%(class)s_recibe")
     fecha=models.DateField()
-    IP_envia=models.CharField(max_length=128)
     monto=models.IntegerField()

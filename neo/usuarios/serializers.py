@@ -45,7 +45,6 @@ class envioSerializer(serializers.ModelSerializer):
             'envia_id',
             "recibe_id",
             'fecha',
-            'IP_envia',
             'monto'
         )
 
