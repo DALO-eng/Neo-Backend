@@ -135,7 +135,7 @@ def logeo(request):
 #logeo
 @csrf_exempt
 def login(request):
-    if request.method=='GET':
+    if request.method=='POST':
         datos=JSONParser().parse(request)
         cuent=cuenta.objects.filter(celular=datos['numero']).first()
         if cuent==None:
@@ -152,7 +152,7 @@ def login(request):
             else:
                 return JsonResponse("clave de acceso incorrecta",safe=False)
     else:
-        return JsonResponse("esta solicitud debe ser de tipo GET",safe=False)
+        return JsonResponse("esta solicitud debe ser de tipo post",safe=False)
 
 #envio
 @csrf_exempt
@@ -205,3 +205,11 @@ def enviar(request):
             return JsonResponse("El monto a enviar debe ser un numero positivo",safe=False)
     else:
         return JsonResponse("Error en el tipo de solicitud, vuelva a intentarlo",safe=False)
+
+#bolsillos
+@csrf_exempt
+def bol(request):
+    if request.method=="GET":
+        bols=bolsillo.objects.filter(cuenta)
+    else:
+        return JsonResponse("El metodo para esta peticion debe ser GET.")
