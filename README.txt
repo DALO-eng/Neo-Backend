@@ -111,15 +111,11 @@ Envio:
 
 Bolsillos:
 
-    -Método: POST
+    -Método: GET
 
-    -Enlace: http://127.0.0.1:8000/bol/
+    -Enlace: http://127.0.0.1:8000/bol/id
 
-    -Formato del JSON: {"cuenta":}
-
-    -Indicaciones: debe pasarsele en el valor del campo "cuenta" el ID de la cuenta a la cual se le quieren averiguar los bolsillos.
-
-    -Ejemplo: {"cuenta":29}
+    -La variable id es el ID de la cuenta a la que se le quiere consultar los bolsillos.
 
     -Si se encuentran bolsillos para la cuenta se retornará una lista con los JSON de cada bolsillo, si no se encuetra ninguno se retornará una lista
     vacía.
