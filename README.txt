@@ -62,9 +62,12 @@ Logeo:
         }
         Ejemplo:
         {
-            "numero":"3132579444",
-            "contrasena":"1234"
+            "numero":"3142617626",
+            "contrasena":"7777"
         }
+
+    -Ejemplo de respuesta:
+        {"monto": 0, "nombre": "Casimiro Buenavista", "id_cuenta": 29}
     -Restricciones:
 
         ♠ El campo "numero" debe tener un maximo de 10 caracteres.

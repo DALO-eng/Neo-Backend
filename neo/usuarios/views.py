@@ -8,7 +8,7 @@ from datetime import date
 from datetime import datetime
 import uuid
 import json
-from rest_framework.exceptions import AuthenticationFailed
+from rest_framework.exceptions import AuthenticationFailed,MethodNotAllowed
 
 # Create your views here.
 @csrf_exempt
@@ -137,24 +137,22 @@ def logeo(request):
 def login(request):
     if request.method=='GET':
         datos=JSONParser().parse(request)
-        try:
-            cuent=cuenta.objects.get(celular=datos['numero'])
-        except ValueError:
-            return JsonResponse("Esa cuenta no existe",safe=False)
+        cuent=cuenta.objects.filter(celular=datos['numero']).first()
+        if cuent==None:
+            return JsonResponse("la cuenta no existe",safe=False)
         else:
             cuenta_serializer=cuentaSerializer(cuent,many=False)
             if cuenta_serializer.data['contrasena']==datos['contrasena']:
-                return JsonResponse(uuid.uuid4(),safe=False)
+                dataCuent=bolsillo.objects.filter(cuenta=cuenta_serializer.data["id_cuenta"],nombre="principal").first()
+                dataBol=bolsilloSerializer(dataCuent,many=False)
+                a=cliente.objects.filter(cuenta=cuenta_serializer.data["id_cuenta"]).first()
+                clientData=clienteSerializer(a,many=False)
+                return JsonResponse({"monto":dataBol.data["monto"],"nombre":clientData.data["nombre"],"id_cuenta":cuenta_serializer.data["id_cuenta"]},safe=False)
+                #return JsonResponse(clientData.data,safe=False)
             else:
-                try:
-                    f=3/0
-                except ValueError:
-                    return JsonResponse("clave de acceso incorrecta",safe=False)
+                return JsonResponse("clave de acceso incorrecta",safe=False)
     else:
-        try:
-            f=3/0
-        except ValueError:
-            return JsonResponse("Error en el tipo de solicitud, vuelva a intentarlo",safe=False)
+        return JsonResponse("esta solicitud debe ser de tipo GET",safe=False)
 
 #envio
 @csrf_exempt
