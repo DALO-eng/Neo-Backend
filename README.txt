@@ -119,3 +119,16 @@ Bolsillos:
 
     -Si se encuentran bolsillos para la cuenta se retornará una lista con los JSON de cada bolsillo, si no se encuetra ninguno se retornará una lista
     vacía.
+
+-Historial:
+
+    -Método: GET
+
+    -Enlace: http://127.0.0.1:8000/bol/id
+
+    -Indicaciones:
+
+        ♠ La variable id es la ID de la cuenta a la que se le quiere ver el historial.
+        ♠ este Enlace solo muestra el historial del bolsillo principal de la cuenta
+        ♠ Si la solicitud es exitosa devolverá una lista de JSON con todos los envios tanto en los que se envio dinero como en los que se recibió.
+        ♠ La lista de envios esta ordenada por fecha independientemente de si fue un envio o si se recibio dinero.

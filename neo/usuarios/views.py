@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
-from usuarios.models import cliente,cuenta,bolsillo,documento
+from usuarios.models import cliente,cuenta,bolsillo,documento,envio
 from usuarios.serializers import clienteSerializer,cuentaSerializer,documentoSerializer,bolsilloSerializer,envioSerializer
 from django.http.response import JsonResponse
 from datetime import date
@@ -9,6 +9,7 @@ from datetime import datetime
 import uuid
 import json
 from rest_framework.exceptions import AuthenticationFailed,MethodNotAllowed
+from django.db.models import Q
 
 # Create your views here.
 @csrf_exempt
@@ -214,4 +215,14 @@ def bol(request,id):
         bolSerializer=bolsilloSerializer(bols,many=True)
         return JsonResponse(bolSerializer.data,safe=False)
     else:
-        return JsonResponse("El metodo para esta peticion debe ser POST.",safe=False)
+        return JsonResponse("El metodo para esta peticion debe ser GET.",safe=False)
+
+#historial
+@csrf_exempt
+def hist(request,id):
+    if request.method=="GET":
+        envios=envio.objects.order_by("fecha").filter(Q(envia_id=id)|Q(recibe_id=id))
+        envSerializer=envioSerializer(envios,many=True)
+        return JsonResponse(envSerializer.data,safe=False)
+    else:
+        return JsonResponse("El metodo para esta peticion debe ser GET.",safe=False)
