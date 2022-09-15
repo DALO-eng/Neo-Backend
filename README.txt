@@ -183,8 +183,13 @@ Eliminacion de cuenta:
     -En caso de exito se devolvera la frase "Lamentamos que te hayas ido, esperamos verte de regreso pronto."
 
 Retiro:
+    -Enlace: http://127.0.0.1:8000/retiro/
+    -Tipo de solicitud: "PUT"
+    -Ejemplo de JSON:
 {
     "id_cuenta":30,
     "nombre":"negocio",
-    "monto":-30
+    "monto":30
 }
+-Si el retiro es exitoso se imprimira: "Transaccion exitosa, retire su dinero de la ranura" y se descuenta el monto especificado
+-el campo nombre es el nombre del bolsillo del que saldra la plata

@@ -16,4 +16,5 @@ urlpatterns=[
     re_path(r'^consignacion/$', views.consig),
     re_path(r'^colchon/([0-9]+)$', views.colchon),
     re_path(r'^transacCol/$', views.Consignarcolchon),
+    re_path(r'^retiro/$', views.cajero)
 ]
