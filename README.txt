@@ -132,3 +132,15 @@ Bolsillos:
         ♠ este Enlace solo muestra el historial del bolsillo principal de la cuenta
         ♠ Si la solicitud es exitosa devolverá una lista de JSON con todos los envios tanto en los que se envio dinero como en los que se recibió.
         ♠ La lista de envios esta ordenada por fecha independientemente de si fue un envio o si se recibio dinero.
+
+Consignacion:
+
+    -metodo: "PUT"
+    -Ejemplo Json:
+    {
+    "celular":"3842617626",
+    "monto":50000000,
+    "nombre":"negocio"
+}
+
+    -enlace: http://127.0.0.1:8000/consignacion/

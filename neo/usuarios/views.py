@@ -226,3 +226,26 @@ def hist(request,id):
         return JsonResponse(envSerializer.data,safe=False)
     else:
         return JsonResponse("El metodo para esta peticion debe ser GET.",safe=False)
+
+#consignar
+@csrf_exempt
+def consig(request):
+    if request.method=="PUT":
+        datos=JSONParser().parse(request)
+        cuent=cuenta.objects.filter(celular=datos["celular"]).first()
+        cuenSeri=cuentaSerializer(cuent,many=False)
+        bol=bolsillo.objects.filter(cuenta=cuenSeri.data["id_cuenta"],nombre=datos["nombre"]).first()
+        if bol==None:
+            return JsonResponse("No se encontro el destino",safe=False)
+        else:
+            bolS=bolsilloSerializer(bol,many=False)
+            nuevData=bolS.data
+            nuevData["monto"]=nuevData["monto"]+datos["monto"]
+            bol1=bolsilloSerializer(bol,data=nuevData)
+            if bol1.is_valid():
+                bol1.save()
+                return JsonResponse("consignacion exitosa.",safe=False)
+            else:
+                return JsonResponse("No se pudo hacer la consignacion",safe=False)
+    else:
+        return JsonResponse("El metodo para esta peticion debe ser POST.",safe=False)
