@@ -176,3 +176,8 @@ Transacciones con colchon:
         bolsillo, en este caso el colchon debe tener fondo suficiente para realizar la Transaccion
         ♠ El bolsillo debe ser propio.
     -En caso de exito se retornará el mensaje: "Exito"
+
+Eliminacion de cuenta:
+
+    -Es el mismo enlace y la misma solicitud que para el login; pero en luguar de una solicitud "POST" debe ser una solicitud "DELETE"
+    -En caso de exito se devolvera la frase "Lamentamos que te hayas ido, esperamos verte de regreso pronto."

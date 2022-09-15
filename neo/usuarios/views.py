@@ -136,7 +136,7 @@ def logeo(request):
 #logeo
 @csrf_exempt
 def login(request):
-    if request.method=='POST':
+    if request.method=='POST' or request.method=='DELETE':
         datos=JSONParser().parse(request)
         cuent=cuenta.objects.filter(celular=datos['numero']).first()
         if cuent==None:
@@ -148,8 +148,11 @@ def login(request):
                 dataBol=bolsilloSerializer(dataCuent,many=False)
                 a=cliente.objects.filter(cuenta=cuenta_serializer.data["id_cuenta"]).first()
                 clientData=clienteSerializer(a,many=False)
-                return JsonResponse({"monto":dataBol.data["monto"],"nombre":clientData.data["nombre"],"id_cuenta":cuenta_serializer.data["id_cuenta"]},safe=False)
-                #return JsonResponse(clientData.data,safe=False)
+                if request.method=='POST':
+                    return JsonResponse({"monto":dataBol.data["monto"],"nombre":clientData.data["nombre"],"id_cuenta":cuenta_serializer.data["id_cuenta"]},safe=False)
+                else:
+                    cuent.delete()
+                    return JsonResponse("Lamentamos que te hayas ido, esperamos verte de regreso pronto.",safe=False)
             else:
                 return JsonResponse("clave de acceso incorrecta",safe=False)
     else:
