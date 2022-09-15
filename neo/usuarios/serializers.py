@@ -33,7 +33,8 @@ class cuentaSerializer(serializers.ModelSerializer):
             'id_cuenta',
             'estado',
             'celular',
-            'contrasena'
+            'contrasena',
+            'colchon'
             )
 
 

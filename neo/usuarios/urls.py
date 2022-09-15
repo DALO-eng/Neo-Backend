@@ -13,5 +13,6 @@ urlpatterns=[
     re_path(r"^nuevoLog/$",ObtainAuthToken.as_view()),
     re_path(r"^bol/([0-9]+)$",views.bol),
     re_path(r"^historial/([0-9]+)$",views.hist),
-    re_path(r'^consignacion/$', views.consig)
+    re_path(r'^consignacion/$', views.consig),
+    re_path(r'^colchon/([0-9]+)$', views.colchon)
 ]

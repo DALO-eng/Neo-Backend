@@ -249,3 +249,13 @@ def consig(request):
                 return JsonResponse("No se pudo hacer la consignacion",safe=False)
     else:
         return JsonResponse("El metodo para esta peticion debe ser POST.",safe=False)
+
+#consignar
+@csrf_exempt
+def colchon(request,id):
+    if request.method=="GET":
+        cuent=cuenta.objects.filter(id_cuenta=id).first()
+        cuentSerializer=cuentaSerializer(cuent,many=False)
+        return JsonResponse(cuentSerializer.data["colchon"],safe=False)
+    else:
+        return JsonResponse("El metodo para esta peticion debe ser GET.",safe=False)

@@ -11,6 +11,7 @@ class cuenta(models.Model):
     estado=models.ForeignKey(estado_cuenta,on_delete=models.PROTECT,blank=True,default=1)#no se puede eliminar el tipo de estado de la cuenta a la que se apunta
     celular=models.CharField(max_length=10,unique=True)
     contrasena=models.CharField(max_length=4)
+    colchon=models.IntegerField(blank=True,default=0)
 
 class tipo_doc(models.Model):
     id_tipo=models.AutoField(primary_key=True)

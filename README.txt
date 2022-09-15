@@ -124,7 +124,7 @@ Bolsillos:
 
     -Método: GET
 
-    -Enlace: http://127.0.0.1:8000/bol/id
+    -Enlace: http://127.0.0.1:8000/historial/id
 
     -Indicaciones:
 
@@ -144,3 +144,11 @@ Consignacion:
 }
 
     -enlace: http://127.0.0.1:8000/consignacion/
+
+Colchon:
+
+    -enlace: http://127.0.0.1:8000/colchon/id
+
+    -metodo: "GET"
+
+    -Retorna el valor en colchon de la cuenta cuyo ID  es la variable ID
