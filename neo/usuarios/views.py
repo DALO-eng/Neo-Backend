@@ -224,9 +224,15 @@ def bol(request,id):
 @csrf_exempt
 def hist(request,id):
     if request.method=="GET":
-        envios=envio.objects.order_by("fecha").filter(Q(envia_id=id)|Q(recibe_id=id))
-        envSerializer=envioSerializer(envios,many=True)
-        return JsonResponse(envSerializer.data,safe=False)
+        bol=bolsillo.objects.filter(cuenta=id,nombre="principal").first()
+        if bol==None:
+            return JsonResponse("no se encuentra la cuenta",safe=False)
+        else:
+            bolser=bolsilloSerializer(bol,many=False)
+            id=bolser.data["id_bol"]
+            envios=envio.objects.order_by("fecha").filter(Q(envia_id=id)|Q(recibe_id=id))
+            envSerializer=envioSerializer(envios,many=True)
+            return JsonResponse(envSerializer.data,safe=False)
     else:
         return JsonResponse("El metodo para esta peticion debe ser GET.",safe=False)
 
@@ -290,5 +296,37 @@ def Consignarcolchon(request):
                     return JsonResponse("Exito",safe=False)
                 else:
                     return JsonResponse("Entrada invalida",safe=False)
+    else:
+        return JsonResponse("El metodo para esta peticion debe ser PUT.",safe=False)
+
+#consignacion
+@csrf_exempt
+def cajero(request):
+    if request.method=="PUT":
+        datos=JSONParser().parse(request)
+        cuent=cuenta.objects.filter(id_cuenta=datos["id_cuenta"]).first()
+        if cuent==None:
+            return JsonResponse("no existe esa cuenta",safe=False)
+        else:
+            cuentSerializer=cuentaSerializer(cuent,many=False)
+            bol=bolsillo.objects.filter(nombre=datos["nombre"],cuenta=datos["id_cuenta"]).first()
+            if bol==None:
+                return JsonResponse("no existe ese bolsillo",safe=False)
+            else:
+                bolSer=bolsilloSerializer(bol,many=False)
+                if datos["monto"]<=0:
+                    return JsonResponse("La cantidad a retirar debe ser positiva",safe=False)
+                else:
+                    dat=bolSer.data
+                    dat["monto"]=dat["monto"]-datos["monto"]
+                    if dat["monto"]<0:
+                        return JsonResponse("saldo insuficiente",safe=False)
+                    else:
+                        bolSer=bolsilloSerializer(bol,data=dat)
+                        if bolSer.is_valid():
+                            bolSer.save()
+                            return JsonResponse("Transaccion exitosa, retire su dinero de la ranura",safe=False)
+                        else:
+                            return JsonResponse("Hubo un error inesperado, vuelva a intentarlo",safe=False)
     else:
         return JsonResponse("El metodo para esta peticion debe ser PUT.",safe=False)

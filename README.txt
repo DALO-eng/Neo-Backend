@@ -181,3 +181,10 @@ Eliminacion de cuenta:
 
     -Es el mismo enlace y la misma solicitud que para el login; pero en luguar de una solicitud "POST" debe ser una solicitud "DELETE"
     -En caso de exito se devolvera la frase "Lamentamos que te hayas ido, esperamos verte de regreso pronto."
+
+Retiro:
+{
+    "id_cuenta":30,
+    "nombre":"negocio",
+    "monto":-30
+}
