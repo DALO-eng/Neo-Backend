@@ -145,10 +145,34 @@ Consignacion:
 
     -enlace: http://127.0.0.1:8000/consignacion/
 
-Colchon:
+consultar Colchon:
 
     -enlace: http://127.0.0.1:8000/colchon/id
 
     -metodo: "GET"
 
     -Retorna el valor en colchon de la cuenta cuyo ID  es la variable ID
+
+Transacciones con colchon:
+
+    -Tipo de solicitud: "PUT"
+    -Enlace: http://127.0.0.1:8000/transacCol/
+    -Tipo de JSON: 
+{
+    "id_cuenta"
+    "nombre"
+    "monto"
+}
+    -Ejemplo de JSON:
+    {
+    "id_cuenta":30,
+    "nombre":"negocio",
+    "monto":-30
+}
+    -indicaciones:
+
+        ♠ El campo nombre es el nombre del bolsillo con el que el colchon va a intercambiar dinero.
+        ♠ El campo monto es cuanto dinero va a entrar al colchon, si es negativo entonces vamos a sacar dinero del colchon para consignarla en el
+        bolsillo, en este caso el colchon debe tener fondo suficiente para realizar la Transaccion
+        ♠ El bolsillo debe ser propio.
+    -En caso de exito se retornará el mensaje: "Exito"

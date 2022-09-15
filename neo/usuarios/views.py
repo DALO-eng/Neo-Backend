@@ -259,3 +259,33 @@ def colchon(request,id):
         return JsonResponse(cuentSerializer.data["colchon"],safe=False)
     else:
         return JsonResponse("El metodo para esta peticion debe ser GET.",safe=False)
+
+#consignar
+@csrf_exempt
+def Consignarcolchon(request):
+    if request.method=="PUT":
+        datos=JSONParser().parse(request)
+        cuent=cuenta.objects.filter(id_cuenta=datos["id_cuenta"]).first()
+        if cuent==None:
+            return JsonResponse("no existe esa cuenta",safe=False)
+        else:
+            cuentSerializer=cuentaSerializer(cuent,many=False)
+            bol=bolsillo.objects.filter(nombre=datos["nombre"],cuenta=datos["id_cuenta"]).first()
+            if bol==None:
+                return JsonResponse("no existe ese bolsillo",safe=False)
+            else:
+                bolSer=bolsilloSerializer(bol,many=False)
+                datColch=cuentSerializer.data
+                datColch["colchon"]=datColch["colchon"]+datos["monto"]
+                datBol=bolSer.data
+                datBol["monto"]=datBol["monto"]-datos["monto"]
+                cuentSerializer=cuentaSerializer(cuent,data=datColch)
+                bolSer=bolsilloSerializer(bol,data=datBol)
+                if datBol["monto"]>=0 and datColch["colchon"]>=0 and cuentSerializer.is_valid() and bolSer.is_valid():
+                    cuentSerializer.save()
+                    bolSer.save()
+                    return JsonResponse("Exito",safe=False)
+                else:
+                    return JsonResponse("Entrada invalida",safe=False)
+    else:
+        return JsonResponse("El metodo para esta peticion debe ser PUT.",safe=False)
